@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { Formik, Form, Field } from "formik";
 
 import styles from "./Auth.module.scss";
 import { Input, TextLogo } from "components";
+import { logInSchema, signUpSchema } from "utils/schemas";
 
 export const Auth = () => {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -9,18 +11,80 @@ export const Auth = () => {
   return (
     <div className={styles.wrapper}>
       <TextLogo />
-      <div className={styles.form}>
-        <div className={styles.title}>{isSignUp ? "Sign Up" : "Sign In"}</div>
-        {isSignUp && <Input type="text" label="Full Name" />}
-        <Input type="text" label="User Name" />
-        <Input type="password" label="Password" />
-        {isSignUp && <Input type="password" label="Confirm Password " />}
-        <button className={styles.actionButton}>
-          {isSignUp ? "Sign Up" : "Sign In"}
-        </button>
-      </div>
+      <Formik
+        initialValues={{
+          fullName: "",
+          userName: "",
+          password: "",
+          passwordRepeat: "",
+        }}
+        validationSchema={isSignUp ? signUpSchema : logInSchema}
+        onSubmit={(values) => {
+          // same shape as initial values
+          console.log(values);
+        }}
+      >
+        {({ values, errors, touched, setValues }) => (
+          <Form className={styles.form}>
+            <div className={styles.title}>
+              {isSignUp ? "Sign Up" : "Sign In"}
+            </div>
+            {isSignUp && (
+              <Field
+                as={Input}
+                name="fullName"
+                type="text"
+                label="Full Name"
+                value={values.fullName}
+                error={errors.fullName && touched.fullName}
+                onChange={(value: string) =>
+                  setValues({ ...values, fullName: value })
+                }
+              />
+            )}
+            <Field
+              as={Input}
+              name="userName"
+              type="text"
+              label="User Name"
+              value={values.userName}
+              error={errors.userName && touched.userName}
+              onChange={(value: string) =>
+                setValues({ ...values, userName: value })
+              }
+            />
+            <Field
+              as={Input}
+              name="password"
+              type="password"
+              label="Password"
+              value={values.password}
+              error={errors.password && touched.password}
+              onChange={(value: string) =>
+                setValues({ ...values, password: value })
+              }
+            />
+            {isSignUp && (
+              <Field
+                as={Input}
+                name="passwordRepeat"
+                type="password"
+                label="Confirm Password"
+                value={values.passwordRepeat}
+                error={errors.passwordRepeat && touched.passwordRepeat}
+                onChange={(value: string) =>
+                  setValues({ ...values, passwordRepeat: value })
+                }
+              />
+            )}
+            <button className={styles.actionButton} type="submit">
+              {isSignUp ? "Sign Up" : "Sign In"}
+            </button>
+          </Form>
+        )}
+      </Formik>
       <div className={styles.bottomText}>
-        {isSignUp ? "Don’t have account yet?" : "I have an account."}
+        {isSignUp ? "I have an account." : "Don’t have account yet?"}
         &nbsp;
         <a
           href="/#"
@@ -30,7 +94,7 @@ export const Auth = () => {
             setIsSignUp((isSignUp) => !isSignUp);
           }}
         >
-          {isSignUp ? "New Account" : "Go to Sign in"}
+          {isSignUp ? "Go to Sign in" : "New Account"}
         </a>
       </div>
     </div>

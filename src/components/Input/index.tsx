@@ -6,20 +6,23 @@ import styles from "./Input.module.scss";
 type Props = {
   type: "text" | "password";
   label: string;
-  // value: string;
-  // onChange: () => void
+  value: string;
+  error: boolean;
+  onChange: (value: string) => void;
 };
 
-export const Input = ({ type, label }: Props) => {
+export const Input = ({ type, label, value, error, onChange }: Props) => {
   const [isVisible, setIsVisible] = useState(false);
 
   return (
     <div className={styles.wrapper}>
       <TextField
-        id="standard-basic"
         label={label}
         type={type}
         variant="standard"
+        value={value}
+        error={error}
+        onChange={(e) => onChange(e.target.value)}
         sx={{
           display: "flex",
           justifyContent: "flex-end",
