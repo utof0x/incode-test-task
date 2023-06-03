@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { TextField } from "@mui/material";
+import { IconButton, InputAdornment, TextField } from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 import styles from "./Input.module.scss";
 
@@ -18,7 +19,7 @@ export const Input = ({ type, label, value, error, onChange }: Props) => {
     <div className={styles.wrapper}>
       <TextField
         label={label}
-        type={type}
+        type={type === "password" && !isVisible ? "password" : "text"}
         variant="standard"
         value={value}
         error={error}
@@ -67,6 +68,20 @@ export const Input = ({ type, label, value, error, onChange }: Props) => {
               color: "#fff",
             },
           },
+        }}
+        InputProps={{
+          endAdornment:
+            type === "password" ? (
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="password"
+                  sx={{ color: "#fff" }}
+                  onClick={() => setIsVisible((isVisible) => !isVisible)}
+                >
+                  {isVisible ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
+              </InputAdornment>
+            ) : null,
         }}
       />
     </div>
