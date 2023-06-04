@@ -1,13 +1,13 @@
 import * as Yup from "yup";
 
 export const logInSchema = Yup.object().shape({
-  userName: Yup.string()
+  username: Yup.string()
     .min(2, "Too Short!")
     .max(24, "Too Long!")
     .trim()
     .required("Required"),
   password: Yup.string()
-    .min(2, "Too Short!")
+    .min(8, "Too Short!")
     .max(32, "Too Long!")
     .trim()
     .required("Required"),
@@ -18,18 +18,18 @@ export const signUpSchema = Yup.object().shape({
     .min(5, "Too Short!")
     .max(50, "Too Long!")
     .required("Required"),
-  userName: Yup.string()
+  username: Yup.string()
     .min(2, "Too Short!")
     .max(24, "Too Long!")
     .trim()
     .required("Required"),
   password: Yup.string()
-    .min(2, "Too Short!")
+    .min(8, "Too Short!")
     .max(32, "Too Long!")
     .trim()
     .required("Required"),
   passwordRepeat: Yup.string()
-    .min(2, "Too Short!")
+    .min(8, "Too Short!")
     .max(32, "Too Long!")
     .trim()
     .required("Required")

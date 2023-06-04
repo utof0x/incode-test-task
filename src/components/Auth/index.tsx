@@ -1,12 +1,21 @@
 import { useState } from "react";
 import { Formik, Form, Field } from "formik";
+import { Navigate } from "react-router-dom";
 
 import styles from "./Auth.module.scss";
 import { Input, TextLogo } from "components";
 import { logInSchema, signUpSchema } from "utils/schemas";
+import { useAppDispatch, useAppSelector } from "hooks";
+import { signIn, signUp } from "store/actions/auth";
 
 export const Auth = () => {
   const [isSignUp, setIsSignUp] = useState(false);
+  const dispatch = useAppDispatch();
+  const { isLoggedIn } = useAppSelector((state) => state.auth);
+
+  if (isLoggedIn) {
+    return <Navigate replace to="/" />;
+  }
 
   return (
     <div className={styles.wrapper}>
@@ -14,14 +23,18 @@ export const Auth = () => {
       <Formik
         initialValues={{
           fullName: "",
-          userName: "",
+          username: "",
           password: "",
           passwordRepeat: "",
         }}
         validationSchema={isSignUp ? signUpSchema : logInSchema}
         onSubmit={(values) => {
-          // same shape as initial values
-          console.log(values);
+          const { fullName, username, password } = values;
+          if (isSignUp) {
+            dispatch(signUp({ displayName: fullName, username, password }));
+          } else {
+            dispatch(signIn({ username, password }));
+          }
         }}
       >
         {({ values, errors, touched, setValues }) => (
@@ -44,13 +57,13 @@ export const Auth = () => {
             )}
             <Field
               as={Input}
-              name="userName"
+              name="username"
               type="text"
               label="User Name"
-              value={values.userName}
-              error={errors.userName && touched.userName}
+              value={values.username}
+              error={errors.username && touched.username}
               onChange={(value: string) =>
-                setValues({ ...values, userName: value })
+                setValues({ ...values, username: value })
               }
             />
             <Field
