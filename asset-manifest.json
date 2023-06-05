@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/incode-test-task/static/css/main.61ee4390.css",
+    "main.js": "/incode-test-task/static/js/main.49e7e4ad.js",
+    "static/media/happy-people.png": "/incode-test-task/static/media/happy-people.2ae40fc921c264e82f6d.png",
+    "index.html": "/incode-test-task/index.html",
+    "main.61ee4390.css.map": "/incode-test-task/static/css/main.61ee4390.css.map",
+    "main.49e7e4ad.js.map": "/incode-test-task/static/js/main.49e7e4ad.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.61ee4390.css",
+    "static/js/main.49e7e4ad.js"
+  ]
+}
