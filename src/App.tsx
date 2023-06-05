@@ -3,10 +3,14 @@ import { Route, Routes } from "react-router-dom";
 
 import { Auth, Home } from "components";
 import styles from "./App.module.scss";
-import { getAccessToken, getIsRefreshTokenExpired } from "utils/functions";
+import {
+  getAccessToken,
+  getIsRefreshTokenExpired,
+  getRefreshToken,
+} from "utils/functions";
 import { useAppDispatch } from "hooks";
 import { setUserLogin } from "store/slices/auth";
-import { logout } from "store/actions/auth";
+import { logout, refreshToken } from "store/actions/auth";
 
 const App = () => {
   const dispatch = useAppDispatch();
@@ -21,9 +25,14 @@ const App = () => {
 
   useEffect(() => {
     const isRefreshTokenExpired = getIsRefreshTokenExpired();
+    const refresh = getRefreshToken();
 
     if (isRefreshTokenExpired) {
       dispatch(logout());
+    } else {
+      if (refresh) {
+        dispatch(refreshToken({ refreshToken: refresh }));
+      }
     }
   }, [dispatch]);
 

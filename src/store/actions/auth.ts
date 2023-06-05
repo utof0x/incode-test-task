@@ -77,6 +77,8 @@ export const refreshToken = createAsyncThunk<
       }
     );
 
+    localStorage.setItem("accessToken", result.data.accessToken);
+
     return result.data.accessToken;
   } catch (error: any) {
     if (error.response && error.response.data.message) {

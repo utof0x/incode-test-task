@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Formik, Form, Field } from "formik";
 import { Navigate } from "react-router-dom";
 
@@ -7,11 +7,19 @@ import { Input, TextLogo } from "components";
 import { logInSchema, signUpSchema } from "utils/schemas";
 import { useAppDispatch, useAppSelector } from "hooks";
 import { signIn, signUp } from "store/actions/auth";
+import { resetIsRegistered } from "store/slices/auth";
 
 export const Auth = () => {
   const [isSignUp, setIsSignUp] = useState(false);
   const dispatch = useAppDispatch();
-  const { isLoggedIn } = useAppSelector((state) => state.auth);
+  const { isLoggedIn, isRegistered } = useAppSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (isRegistered) {
+      dispatch(resetIsRegistered());
+      setIsSignUp(false);
+    }
+  }, [isRegistered, dispatch]);
 
   if (isLoggedIn) {
     return <Navigate replace to="/" />;
